@@ -106,36 +106,36 @@ contract CodyfightToken is Pausable {
         emit Transfer(address(0), _msgSender(), _totalSupply);
     }
 
-    function name() external pure virtual returns (string memory) {
+    function name() external pure returns (string memory) {
         return "Codyfight Token";
     }
 
-    function symbol() external pure virtual returns (string memory) {
+    function symbol() external pure returns (string memory) {
         return "CTOK";
     }
 
-    function decimals() external pure virtual returns (uint8) {
+    function decimals() external pure returns (uint8) {
         return 18;
     }
 
-    function totalSupply() external view virtual returns (uint256) {
+    function totalSupply() external view returns (uint256) {
         return _totalSupply;
     }
 
-    function balanceOf(address account) external view virtual returns (uint256) {
+    function balanceOf(address account) external view returns (uint256) {
         return _balances[account];
     }
 
-    function transfer(address recipient, uint256 amount) external virtual returns (bool) {
+    function transfer(address recipient, uint256 amount) external returns (bool) {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
 
-    function allowance(address owner, address spender) external view virtual returns (uint256) {
+    function allowance(address owner, address spender) external view returns (uint256) {
         return _allowances[owner][spender];
     }
 
-    function approve(address spender, uint256 amount) external virtual returns (bool) {
+    function approve(address spender, uint256 amount) external returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
@@ -144,7 +144,7 @@ contract CodyfightToken is Pausable {
         address sender,
         address recipient,
         uint256 amount
-    ) external virtual returns (bool) {
+    ) external returns (bool) {
         _transfer(sender, recipient, amount);
 
         uint256 currentAllowance = _allowances[sender][_msgSender()];
@@ -156,12 +156,12 @@ contract CodyfightToken is Pausable {
         return true;
     }
 
-    function increaseAllowance(address spender, uint256 addedValue) external virtual returns (bool) {
+    function increaseAllowance(address spender, uint256 addedValue) external returns (bool) {
         _approve(_msgSender(), spender, _allowances[_msgSender()][spender] + addedValue);
         return true;
     }
 
-    function decreaseAllowance(address spender, uint256 subtractedValue) external virtual returns (bool) {
+    function decreaseAllowance(address spender, uint256 subtractedValue) external returns (bool) {
         uint256 currentAllowance = _allowances[_msgSender()][spender];
         require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
         unchecked {
@@ -171,7 +171,7 @@ contract CodyfightToken is Pausable {
         return true;
     }
 
-    function burn(uint256 amount) external virtual {
+    function burn(uint256 amount) external {
         _burn(_msgSender(), amount);
     }
 
@@ -179,7 +179,7 @@ contract CodyfightToken is Pausable {
         address sender,
         address recipient,
         uint256 amount
-    ) internal virtual {
+    ) internal {
         require(sender != address(0), "ERC20: transfer from the zero address");
         require(recipient != address(0), "ERC20: transfer to the zero address");
 
@@ -196,7 +196,7 @@ contract CodyfightToken is Pausable {
     }
 
 
-    function _burn(address account, uint256 amount) internal virtual {
+    function _burn(address account, uint256 amount) internal {
         require(account != address(0), "ERC20: burn from the zero address");
 
         _beforeTokenTransfer();
@@ -215,7 +215,7 @@ contract CodyfightToken is Pausable {
         address owner,
         address spender,
         uint256 amount
-    ) internal virtual {
+    ) internal {
         require(owner != address(0), "ERC20: approve from the zero address");
         require(spender != address(0), "ERC20: approve to the zero address");
 
@@ -223,7 +223,7 @@ contract CodyfightToken is Pausable {
         emit Approval(owner, spender, amount);
     }
 
-    function _beforeTokenTransfer() internal virtual {
+    function _beforeTokenTransfer() internal view {
         require(!paused(), "ERC20Pausable: token transfer while paused");
     }
 }
