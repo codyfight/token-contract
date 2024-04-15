@@ -1,8 +1,8 @@
 # $CTOK token-contract
 Codyfight Token (CTOK)
 
-[Etherscan](https://etherscan.io/address/0xf1acfb5d95bc090bc55d8ae58a8df4081d73e009)
+[Polygon Mumbai - Testnet](https://mumbai.polygonscan.com/token/0x8f3ae4de8be5a00841cbef7163f9918250f0e9b6)
 
-[Hacken audit report](https://hacken.io/wp-content/uploads/2021/11/%D0%A1odyfight_25112021SCAudit_Report.pdf)
+Arbitrum One - Mainnet to be announced
 
 Read more in the official [White Paper](https://codyfight.gitbook.io/white-paper/tokenomics/codyfight-token-ctok)
