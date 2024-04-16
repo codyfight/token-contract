@@ -1,48 +1,49 @@
-# Codyfight Token ($CTOK)
+# Codyfight Token $CTOK - Project Documentation
 
-Codyfight Token (CTOK)
+Visit the official [Codyfight website](https://codyfight.com) for more information.
 
-[Polygon Mumbai - Testnet](https://mumbai.polygonscan.com/token/0x8f3ae4de8be5a00841cbef7163f9918250f0e9b6)
-
-Arbitrum One - Mainnet to be announced
-
-Read more in the official [White Paper](https://codyfight.gitbook.io/white-paper/tokenomics/codyfight-token-ctok)
-
-# Codyfight Token ($CTOK) Project Documentation
-
-## Git Repository
-
+- Official [White Paper](https://codyfight.gitbook.io/white-paper/tokenomics/codyfight-token-ctok)
 - Repository: [Codyfight Token Contract](https://github.com/codyfight/token-contract)
+- [Polygon Mumbai - Testnet](https://mumbai.polygonscan.com/token/0x8f3ae4de8be5a00841cbef7163f9918250f0e9b6)
+- Arbitrum One - Mainnet (Coming Soon)
+- Audit Report (Coming Soon)
 
 ## Functional Requirements
 
 ### Project Purpose
 
-CTOK fuels Codyfight's in-game economy, facilitating asset exchange and rewarding players. It operates on the Arbitrum blockchain for in-game transactions and broader crypto use.
+**CTOK** fuels Codyfight's in-game economy, facilitating asset exchange and rewarding players. It operates on the [Arbitrum](https://arbitrum.io/) blockchain for in-game transactions and broader crypto use.
 
 ### Project Features
 
-CTOK is a LERC-20 Burnable token, this protocol created and maintained by Lossless.io is an ERC-20 implementation that is capable of freezing any fraudulent transaction based on a set of fraud identification parameters.
+**CTOK** is a [LERC-20](https://docs.lossless.io/protocol/technical-reference/lerc20) Burnable token, this protocol created and maintained by [Lossless.io](https://lossless.io/) is an [ERC-20](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) implementation that is capable of freezing any fraudulent transaction based on a set of fraud identification parameters.
+
+_References:_
+
+- _[$CTOK](https://codyfight.gitbook.io/white-paper/tokenomics/ctok)_
+- _[ERC-20 Standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/)_
+- _[LERC-20 Protocol](https://docs.lossless.io/protocol/technical-reference/lerc20)_
+- _[Lossless Controller](https://docs.lossless.io/protocol/technical-reference/lossless-controller)_
 
 ### Project Business Logic
 
-CodyfightToken (CTOK) smart contract establishes a burnable ERC20 token with additional features for recovery administration and lossless functionality. It inherits from LERC20Burnable, implementing functions for transfers, approvals, and allowance management. Key features include:
+**CTOK** smart contract establishes a burnable [ERC-20](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) token with additional features for recovery administration and lossless functionality. It inherits from [LERC20Burnable](https://docs.lossless.io/protocol/technical-reference/lerc20), implementing functions for transfers, approvals, and allowance management. Key features include:
 
-- Lossless Functionality: Control mechanisms are in place to toggle lossless functionality, enabling additional checks for transfers and approvals via the Lossless Controller (ILssController).
+- **Lossless Functionality**: Control mechanisms are in place to toggle lossless functionality, enabling additional checks for transfers and approvals via the [Lossless Controller](https://docs.lossless.io/protocol/technical-reference/lossless-controller).
 
-- Recovery Administration: The contract facilitates the transfer of recovery admin ownership and the proposal and execution of lossless functionality turn-off.
+- **Recovery Administration**: The contract facilitates the transfer of recovery admin ownership and the proposal and execution of lossless functionality turn-off.
 
-- ERC20 Compliance: Standard ERC20 functions such as transfer, transferFrom, approve, increaseAllowance, and decreaseAllowance are implemented, along with events to track token transfers and approvals.
+- **ERC20 Compliance**: Standard [ERC-20](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) functions such as _transfer_, _transferFrom_, _approve_, _increaseAllowance_, and _decreaseAllowance_ are implemented, along with events to track token transfers and approvals.
 
-- Token Minting and Burning: Functions for minting and burning tokens are provided, with appropriate checks for balance and allowance.
+- **Token Minting and Burning**: Functions for minting and burning tokens are provided, with appropriate checks for balance and allowance. The minting function is only available at contract deployment.
 
 ### Use Cases
 
-CTOK has plenty of utilities and serves not only as a way to reward players but also as a system to value users’ tasks in-game.
+**CTOK** has plenty of utilities and serves not only as a way to reward players but also as a system to value users’ tasks in-game.
 
-Codyfight is a competitive game and Codyfighters will need to showcase their skills and think efficiently about how to win tokens.
+Codyfight is a competitive game and [Codyfighters](https://codyfight.gitbook.io/white-paper/gameplay/in-game-assets/codyfighter) will need to showcase their skills and think efficiently about how to win tokens.
 
-Use cases are community incentives, rewards, in-game asset purchases, governance and more:
+Use cases are community **incentives**, **rewards**, **in-game asset** purchases, **governance** and more:
 
 - Lower costs of in-game transaction fees, keeping them at the bare minimum.
 - Reward external project contributors and motivate them to get involved in the success of the project.
@@ -52,6 +53,10 @@ Use cases are community incentives, rewards, in-game asset purchases, governance
 - Reward for competitive players, team members, and e-sport investors.
 
 These use cases demonstrate the versatile applications of the CodyfightToken smart contract within the gaming ecosystem and beyond, leveraging blockchain technology to enhance user experiences, incentivize participation, and facilitate economic interactions.
+
+_References:_
+
+- _[CTOK Utility](https://codyfight.gitbook.io/white-paper/tokenomics/utilities)_
 
 ### Roles and Authorizations
 
@@ -74,13 +79,17 @@ These use cases demonstrate the versatile applications of the CodyfightToken sma
 
 These permissions empower the Recovery Admin to oversee critical administrative tasks, ensuring the contract's smooth operation and security.
 
+_References:_
+
+- _[Lossless Governance](https://docs.lossless.io/protocol#overview)_
+
 ## Technical Requirements
 
 ### Project Components
 
-CodyfightToken (CTOK) is a LERC20Burnable contract. Deploying it requires these parameters:
+CodyfightToken (CTOK) is a [LERC20Burnable](https://docs.lossless.io/protocol/technical-reference/lerc20) contract. Deploying it requires these parameters:
 
-- **totalSupply**: amount of tokens to be minted;
+- **totalSupply**: amount of tokens to be minted (18 decimals);
 
 - **name**: token title;
 
@@ -94,52 +103,56 @@ CodyfightToken (CTOK) is a LERC20Burnable contract. Deploying it requires these 
 
 - **lossless**: Lossless protocol controller address. It should be set to Lossless Controller address. Lossless Controller address is different on different chains. Any other address will not allow the token to function properly. You can find the appropriate controller address here.
 
+_References:_
+
+- _[Lossless Integration](https://docs.lossless.io/protocol/guides/lossless-integration-into-the-token/lossless-integration)_
+
 ### Technologies Used
 
 The CodyfightToken (CTOK) project employs a diverse set of technologies to build and operate its ecosystem. Here's a breakdown of the key technologies used:
 
-- **Solidity**: Smart contract language.
-- **Arbitrum Blockchain**: Layer 2 scaling solution.
-- **ERC-20 Standard**: Token interoperability.
-- **LERC-20 Protocol**: Lossless functionality.
-- **OpenZeppelin**: Smart contract library.
-- **NatSpec Docs**: Human-readable contract documentation.
-- **Hardhat**: Ethereum development environment.
-- **Mocha and Chai**: Testing frameworks.
-- **Ethers.js**: Ethereum interaction library.
-- **TypeScript**: JavaScript superset for type safety.
-- **Node.js and Express.js**: Backend development.
+- [**Solidity**](https://soliditylang.org/): Smart contract language.
+- [**Arbitrum Blockchain**](https://arbitrum.io/): Layer 2 scaling solution.
+- [**ERC-20 Standard**](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/): Token interoperability.
+- [**LERC-20 Protocol**](https://docs.lossless.io/protocol/technical-reference/lerc20): Lossless functionality.
+- [**OpenZeppelin**](https://www.openzeppelin.com/): Smart contract library.
+- [**NatSpec Docs**](https://docs.soliditylang.org/en/latest/natspec-format.html): Human-readable contract documentation (Ethereum Natural Language Specification Format)
+- [**Hardhat**](https://hardhat.org/): Ethereum development environment.
+- **[Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/)**: Testing framework and assertions library.
+- [**Ethers.js**](https://docs.ethers.org/v6/): Ethereum interaction library.
+- [**TypeScript**](https://www.typescriptlang.org/): JavaScript superset for type safety.
+- **[Node.js](https://nodejs.org/en), [Express.js](https://expressjs.com/) and more**: Backend development.
 
-CodyfightToken project aims to build a secure, scalable, and feature-rich token ecosystem on the Arbitrum blockchain, providing users with a seamless and rewarding experience.
+CodyfightToken project aims to build a secure, scalable, and feature-rich token ecosystem on the [Arbitrum](https://arbitrum.io/) blockchain, providing users with a seamless and rewarding experience.
 
 ### Architectural Design
 
 #### Smart Contracts
 
-- **LERC20Burnable:** Implements core token functionalities including minting, burning, transferring, and allowance management. Integrates lossless functionality through modifiers and events.
-- **CodyfightToken (CTOK):** Main token contract inheriting functionality from LERC20Burnable. Initializes token parameters and interacts with lossless controller.
+- [**LERC20Burnable**](https://github.com/codyfight/token-contract/blob/main/CodyfightToken.sol#L117): Implements core token functionalities including minting, burning, transferring, and allowance management. Integrates lossless functionality through modifiers and events.
+- [**CodyfightToken**](https://github.com/codyfight/token-contract/blob/main/CodyfightToken.sol#L762): Main token contract inheriting functionality from LERC20Burnable. Initializes token parameters and interacts with lossless controller.
 
 #### Interfaces
 
-- **ILssController:** Interface defining functions for lossless functionality such as beforeTransfer, beforeApprove, beforeBurn, etc.
+- [**ILssController**](https://github.com/Lossless-Cash/lossless-v4/blob/master/contracts/LosslessControllerV4.sol): Interface defining functions for lossless functionality such as _beforeTransfer_, _beforeApprove_, _beforeBurn_, etc.
 
 #### Admin and Recovery Admin
 
-- Administrative wallet address (admin*) and recovery admin wallet address (recoveryAdmin*) specified during contract deployment. Recovery admin proposes and executes changes related to lossless functionality and ownership transfer.
+- Administrative wallet address (admin) and recovery admin wallet address (recoveryAdmin) specified during contract deployment. Recovery admin proposes and executes changes related to lossless functionality and ownership transfer. Admin holds minted tokens and governs the contract, interacting with the lossless protocol for governance decisions.
 
 #### Lossless Functionality
 
-- CTOK includes lossless functionality with additional checks and safeguards during token transfers and operations. Toggled on or off by recovery admin for flexibility and security enhancements.
+- **CTOK** includes lossless functionality with additional checks and safeguards during token transfers and operations. Toggled on or off by recovery admin for flexibility and security enhancements.
 
 #### Events
 
-- Various events emitted during contract execution to provide visibility into important state changes. Events include Transfer, Approval, NewAdmin, NewRecoveryAdminProposal, NewRecoveryAdmin, LosslessTurnOffProposal, LosslessOff, and LosslessOn.
+- Various events emitted during contract execution to provide visibility into important state changes. Events include _Transfer_, _Approval_, _NewAdmin_, _NewRecoveryAdminProposal_, _NewRecoveryAdmin_, _LosslessTurnOffProposal_, _LosslessOff_, and _LosslessOn_.
 
 #### Modifiers
 
-- Modifiers enforce additional checks and interactions with the lossless controller before executing certain functions. Modifiers such as lssTransfer, lssApprove, lssBurn, etc., ensure secure and efficient contract operations.
+- Modifiers enforce additional checks and interactions with the lossless controller before executing certain functions. Modifiers such as _lssTransfer_, _lssApprove_, _lssBurn_, etc., ensure secure and efficient contract operations.
 
-Overall, the architecture of the CTOK project revolves around secure and efficient smart contracts, with a focus on implementing lossless functionality and providing flexibility for contract administration and ownership. The interaction between the main token contract, lossless controller, admin, and recovery admin ensures robust governance and security for the CTOK ecosystem.
+Overall, the architecture of the **CTOK** project revolves around secure and efficient smart contracts, with a focus on implementing lossless functionality and providing flexibility for contract administration and ownership. The interaction between the main token contract, lossless controller, admin, and recovery admin ensures robust governance and security for the **CTOK** ecosystem.
 
 #### Testing
 
@@ -147,7 +160,13 @@ The CodyfightToken (CTOK) project includes comprehensive testing to ensure the f
 
 #### Deployment
 
-The deployment process involves deploying the CTOK smart contract on the Arbitrum blockchain with the specified parameters, including total supply, token name, symbol, admin, recovery admin, timelock period, and lossless controller address. Once deployed, the contract is ready to interact with users and other components of the Codyfight ecosystem.
+The deployment process involves deploying the **CTOK** smart contract on the Arbitrum blockchain with the specified parameters, including total supply, token name, symbol, admin, recovery admin, timelock period, and lossless controller address. Once deployed, the contract is ready to interact with users and other components of the Codyfight ecosystem.
+
+_References:_
+
+- _[CodyfightToken.sol](https://github.com/codyfight/token-contract/blob/main/CodyfightToken.sol)_
+- _[LERC20Burnable.sol](https://github.com/Lossless-Cash/lossless-v4/blob/master/contracts/LERC20Burnable.sol)_
+- _[LosslessControllerV4.sol](https://github.com/Lossless-Cash/lossless-v4/blob/master/contracts/LosslessControllerV4.sol)_
 
 ## Non-Functional Requirements
 
@@ -169,11 +188,11 @@ The CodyfightToken (CTOK) project incorporates several security measures, compli
 
 - **Testing and Auditing:** Comprehensive testing and auditing processes are conducted to validate the contract's functionality, security, and compliance with best practices, minimizing the risk of vulnerabilities and exploits.
 
-By incorporating these security measures and best practices, the CodyfightToken (CTOK) project aims to create a secure and reliable token ecosystem that safeguards user assets and transactions on the Arbitrum blockchain.
+By incorporating these security measures and best practices, the CodyfightToken (CTOK) project aims to create a secure and reliable token ecosystem that safeguards user assets and transactions on the [Arbitrum](https://arbitrum.io/) blockchain.
 
 ### Scalability and Performance
 
-The CodyfightToken (CTOK) project leverages the Arbitrum blockchain as a layer 2 scaling solution to enhance scalability and performance for in-game transactions and broader crypto use. By operating on Arbitrum, CTOK benefits from:
+The CodyfightToken (CTOK) project leverages the [Arbitrum](https://arbitrum.io/) blockchain as a layer 2 scaling solution to enhance scalability and performance for in-game transactions and broader crypto use. By operating on Arbitrum, **CTOK** benefits from:
 
 - **Low Transaction Fees:** Arbitrum offers low transaction fees, making it cost-effective for users to perform token transfers, asset exchanges, and other operations within the Codyfight ecosystem.
 
@@ -185,19 +204,23 @@ The CodyfightToken (CTOK) project leverages the Arbitrum blockchain as a layer 2
 
 The scalability and performance benefits of operating on Arbitrum enable the CodyfightToken (CTOK) project to deliver a seamless and efficient token ecosystem that meets the needs of players, developers, and stakeholders within the gaming community.
 
+_References:_
+
+- _[Arbitrum Rollup](https://arbitrum.io/rollup)_
+
 ### Usability and User Experience
 
 The CodyfightToken (CTOK) project focuses on usability and user experience to provide a seamless and rewarding interaction for players, developers, and stakeholders within the gaming ecosystem. Key usability features and enhancements include:
 
-- **Intuitive Token Operations:** CTOK offers intuitive token operations such as transfers, approvals, minting, and burning, enabling users to interact with the token contract easily and efficiently.
+- **Intuitive Token Operations:** CTOK offers intuitive token operations such as transfers, approvals, and burning, enabling users to interact with the token contract easily and efficiently.
 
 - **NatSpec Documentation:** Human-readable documentation is provided for the smart contract functions, events, and modifiers, making it easier for developers and users to understand the contract's behavior and usage.
 
 By focusing on usability and user experience, the CodyfightToken (CTOK) project aims to create a user-friendly and engaging token ecosystem that empowers players, developers, and stakeholders to participate in the gaming community and benefit from the rewards and incentives offered by CTOK.
 
-# Codyfight Token ($CTOK) Contract Documentation
+# Codyfight Token $CTOK - Contract Documentation
 
-## Context
+## Context Contract
 
 Context provides information about the transaction sender.
 
@@ -335,7 +358,7 @@ _Function to be called before a burn._
 | account | address | The account address. |
 | amount  | uint256 | The burn amount.     |
 
-## LERC20Burnable
+## LERC20Burnable Contract
 
 LERC20Burnable is a contract that implements the ERC20 standard with burn and lossless features.
 The LERC20Burnable contract is based on the OpenZeppelin Context contract.
@@ -1050,7 +1073,7 @@ _Function to burn tokens from an account. Uses the lssBurn modifier to call the 
 | account | address | The account address. |
 | amount  | uint256 | The burn amount.     |
 
-## CodyfightToken
+## CodyfightToken Contract
 
 CodyfightToken is the official token of Codyfight. Tokens are only minted at contract deployment. No mint function is available after deployment. Tokens can be burned.
 
