@@ -1,12 +1,17 @@
-# Codyfight Token $CTOK - Project Documentation
+# Codyfight Token $CTOK
+
+![footer-logo](https://github.com/codyfight/token-contract/assets/47956560/460d9ddb-df85-469d-9801-0e4dc5504dd3)
 
 Visit the official [Codyfight website](https://codyfight.com) for more information.
 
-- Official [White Paper](https://codyfight.gitbook.io/white-paper/tokenomics/codyfight-token-ctok)
-- Repository: [Codyfight Token Contract](https://github.com/codyfight/token-contract)
-- [Polygon Mumbai - Testnet](https://mumbai.polygonscan.com/token/0x8f3ae4de8be5a00841cbef7163f9918250f0e9b6)
-- Arbitrum One - Mainnet (Coming Soon)
+- [Wiki](https://github.com/codyfight/token-contract/wiki)
+- [Repository](https://github.com/codyfight/token-contract)
+- [White Paper](https://codyfight.gitbook.io/white-paper/tokenomics/codyfight-token-ctok)
+- Testnet - [Polygon Mumbai](https://mumbai.polygonscan.com/token/0x8f3ae4de8be5a00841cbef7163f9918250f0e9b6)
+- Mainnet - Arbitrum One (Coming Soon)
 - Audit Report (Coming Soon)
+
+# Codyfight Token $CTOK - Project Documentation
 
 ## Functional Requirements
 
