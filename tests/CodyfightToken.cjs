@@ -54,6 +54,15 @@ describe('CTOK', async function () {
       const adminBalance = await ctok.balanceOf(deployer.address)
       expect(adminBalance).to.equal(0)
     })
+
+    it('should not set lossless controller as zero address', async function () {
+      await expect(
+        deployContract({
+          ...defConstructorArgs,
+          lossless: '0x0000000000000000000000000000000000000000'
+        })
+      ).to.be.revertedWith('LERC20: Lossless controller cannot be zero address')
+    })
   })
 
   describe('Getters', function () {

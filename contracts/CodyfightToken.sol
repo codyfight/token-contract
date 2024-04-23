@@ -217,6 +217,11 @@ contract LERC20Burnable is Context {
     uint256 timelockPeriod_,
     address lossless_
   ) {
+    require(
+      lossless_ != address(0),
+      'LERC20: Lossless controller cannot be zero address'
+    );
+
     _mint(admin_, totalSupply_);
     _name = name_;
     _symbol = symbol_;
