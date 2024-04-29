@@ -7,9 +7,8 @@ Visit the official [Codyfight website](https://codyfight.com) for more informati
 - [Wiki](https://github.com/codyfight/token-contract/wiki)
 - [Repository](https://github.com/codyfight/token-contract)
 - [White Paper](https://codyfight.gitbook.io/white-paper/tokenomics/codyfight-token-ctok)
-- Testnet - [Polygon Mumbai](https://mumbai.polygonscan.com/token/0x8f3ae4de8be5a00841cbef7163f9918250f0e9b6)
-- Mainnet - Arbitrum One (Coming Soon)
-- Audit Report (Coming Soon)
+- [Arbitrum One](https://arbiscan.io/token/0xa586b3b80d7e3e8d439e25fbc16bc5bcee3e2c85)
+- [Hacken Audit](https://hacken.io/audits/codyfight)
 
 # Codyfight Token $CTOK - Project Documentation
 
