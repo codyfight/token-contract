@@ -18,15 +18,10 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "contract-docs": "npx hardhat docgen",
-    "contract-flat": "npx hardhat run scripts/flatten.js",
     "contract-test": "clear && hardhat test",
     "contract-network": "npx hardhat node",
     "contract-deploy": "rm -rf artifacts && rm -rf cache && npm run contract-test && npx hardhat run --network prod scripts/deploy.js",
-    "contract-deploy:local": "rm -rf artifacts && rm -rf cache && npm run contract-test && npx hardhat run --network localhost scripts/deploy.js",
-    "eslint": "eslint --ext .js,.ts,.cjs,.mjs .",
-    "format": "prettier --config ./.prettierrc './**/*.js' --write",
-    "pre-commit": "npm run format & npm run eslint"
+    "contract-deploy:local": "rm -rf artifacts && rm -rf cache && npm run contract-test && npx hardhat run --network localhost scripts/deploy.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
@@ -51,8 +46,6 @@
   },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "inquirer": "^9.2.12",
-    "prettier": "^3.2.5",
-    "solidity-docgen": "^0.6.0-beta.36"
+    "inquirer": "^9.2.12"
   }
 }
