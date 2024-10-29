@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 const { ethers } = require('hardhat')
 const { expect } = require('chai')
@@ -6,8 +7,13 @@ const { expect } = require('chai')
 describe('CGAZ', async function () {
   let CGAZ, cgaz, owner, addr1, addr2
 
-  const NAME = 'CodyfightGaz'
   const SYMBOL = 'CGAZ'
+  const NAME = 'CodyfightGaz'
+
+  const MINTER_ROLE = ethers.utils.keccak256(
+    ethers.utils.toUtf8Bytes('MINTER_ROLE')
+  )
+  const DEFAULT_ADMIN_ROLE = ethers.constants.HashZero
 
   async function deployContract(ownerAddress) {
     cgaz = await CGAZ.deploy(ownerAddress)
@@ -37,8 +43,11 @@ describe('CGAZ', async function () {
       expect(await cgaz.decimals()).to.equal(18)
     })
 
-    it('should set the correct owner', async function () {
-      expect(await cgaz.owner()).to.equal(owner.address)
+    it('should assign the correct roles to the owner', async function () {
+      expect(await cgaz.hasRole(MINTER_ROLE, owner.address)).to.equal(true)
+      expect(await cgaz.hasRole(DEFAULT_ADMIN_ROLE, owner.address)).to.equal(
+        true
+      )
     })
 
     it('should revert if zero address is set as owner', async function () {
@@ -48,21 +57,66 @@ describe('CGAZ', async function () {
     })
   })
 
+  describe('Role Management', function () {
+    it('should allow admin to grant MINTER_ROLE to another address', async function () {
+      await cgaz.grantRole(MINTER_ROLE, addr1.address)
+      expect(await cgaz.hasRole(MINTER_ROLE, addr1.address)).to.equal(true)
+    })
+
+    it('should revert if a non-admin tries to grant MINTER_ROLE', async function () {
+      await expect(
+        cgaz.connect(addr1).grantRole(MINTER_ROLE, addr2.address)
+      ).to.be.revertedWith(
+        `AccessControl: account ${addr1.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`
+      )
+    })
+
+    it('should allow admin to revoke MINTER_ROLE from another address', async function () {
+      await cgaz.grantRole(MINTER_ROLE, addr1.address)
+      expect(await cgaz.hasRole(MINTER_ROLE, addr1.address)).to.equal(true)
+
+      await cgaz.revokeRole(MINTER_ROLE, addr1.address)
+      expect(await cgaz.hasRole(MINTER_ROLE, addr1.address)).to.equal(false)
+    })
+
+    it('should revert if a non-admin tries to revoke MINTER_ROLE', async function () {
+      await cgaz.grantRole(MINTER_ROLE, addr1.address)
+
+      await expect(
+        cgaz.connect(addr1).revokeRole(MINTER_ROLE, addr2.address)
+      ).to.be.revertedWith(
+        `AccessControl: account ${addr1.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`
+      )
+    })
+
+    it('should allow an account to renounce its own role', async function () {
+      await cgaz.grantRole(MINTER_ROLE, addr1.address)
+      expect(await cgaz.hasRole(MINTER_ROLE, addr1.address)).to.equal(true)
+
+      await cgaz.connect(addr1).renounceRole(MINTER_ROLE, addr1.address)
+      expect(await cgaz.hasRole(MINTER_ROLE, addr1.address)).to.equal(false)
+    })
+  })
+
   describe('Minting', function () {
-    it('should allow the owner to mint tokens', async function () {
+    it('should allow an address with MINTER_ROLE to mint tokens', async function () {
       const mintAmount = ethers.utils.parseEther('100')
       await cgaz.connect(owner).mint(owner.address, mintAmount)
 
       const ownerBalance = await cgaz.balanceOf(owner.address)
+
       expect(ownerBalance).to.equal(mintAmount)
       expect(await cgaz.totalSupply()).to.equal(mintAmount)
     })
 
-    it('should revert if a non-owner tries to mint tokens', async function () {
+    it('should revert if a non-minter tries to mint tokens', async function () {
       const mintAmount = ethers.utils.parseEther('100')
+
       await expect(
         cgaz.connect(addr1).mint(addr1.address, mintAmount)
-      ).to.be.revertedWith('Ownable: caller is not the owner')
+      ).to.be.revertedWith(
+        `AccessControl: account ${addr1.address.toLowerCase()} is missing role ${MINTER_ROLE}`
+      )
     })
 
     it('should revert when minting to the zero address', async function () {
@@ -101,7 +155,7 @@ describe('CGAZ', async function () {
       )
     })
 
-    it('should revert if a non-owner tries to batch mint tokens', async function () {
+    it('should revert if a non-minter tries to batch mint tokens', async function () {
       const toArr = [owner.address, addr1.address]
       const amountArr = [
         ethers.utils.parseEther('100'),
@@ -110,7 +164,9 @@ describe('CGAZ', async function () {
 
       await expect(
         cgaz.connect(addr1).batchMint(toArr, amountArr)
-      ).to.be.revertedWith('Ownable: caller is not the owner')
+      ).to.be.revertedWith(
+        `AccessControl: account ${addr1.address.toLowerCase()} is missing role ${MINTER_ROLE}`
+      )
     })
   })
 
@@ -135,175 +191,66 @@ describe('CGAZ', async function () {
       await cgaz.connect(owner).mint(owner.address, mintAmount)
 
       const burnAmount = mintAmount.add(ethers.utils.parseEther('1'))
-
       await expect(cgaz.connect(owner).burn(burnAmount)).to.be.revertedWith(
         'CGAZ: insufficient balance'
       )
     })
-
-    it('should allow the owner to burn tokens from any address', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      const burnAmount = ethers.utils.parseEther('10')
-      const newBalance = mintAmount.sub(burnAmount)
-
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-      await cgaz.connect(owner).burnFrom(addr1.address, burnAmount)
-
-      const addr1Balance = await cgaz.balanceOf(addr1.address)
-      const totalSupply = await cgaz.totalSupply()
-
-      expect(addr1Balance).to.equal(newBalance)
-      expect(totalSupply).to.equal(mintAmount.sub(burnAmount))
-    })
-
-    it('should revert if a non-owner tries to burn tokens from any address', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await expect(
-        cgaz.connect(addr1).burnFrom(addr1.address, mintAmount)
-      ).to.be.revertedWith('Ownable: caller is not the owner')
-    })
-
-    it('should revert when burning from the zero address', async function () {
-      await expect(
-        cgaz
-          .connect(owner)
-          .burnFrom(ethers.constants.AddressZero, ethers.utils.parseEther('1'))
-      ).to.be.revertedWith('CGAZ: burn from the zero address')
-    })
-
-    it('should revert when burning zero tokens', async function () {
-      await expect(
-        cgaz.connect(owner).burnFrom(owner.address, 0)
-      ).to.be.revertedWith('CGAZ: amount must be greater than zero')
-    })
-
-    it('should revert if balance is zero', async function () {
-      await expect(
-        cgaz
-          .connect(owner)
-          .burnFrom(owner.address, ethers.utils.parseEther('1'))
-      ).to.be.revertedWith('CGAZ: insufficient balance')
-    })
-  })
-
-  describe('Deposits', function () {
-    it('should deposit tokens from one address to another by the owner', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await cgaz
-        .connect(owner)
-        .deposit(addr1.address, addr2.address, mintAmount)
-
-      const addr1Balance = await cgaz.balanceOf(addr1.address)
-      const addr2Balance = await cgaz.balanceOf(addr2.address)
-
-      expect(addr1Balance).to.equal(0)
-      expect(addr2Balance).to.equal(mintAmount)
-    })
-
-    it('should revert if a non-owner tries to deposit tokens', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await expect(
-        cgaz.connect(addr1).deposit(addr1.address, addr2.address, mintAmount)
-      ).to.be.revertedWith('Ownable: caller is not the owner')
-    })
-
-    it('should revert when depositing to the zero address', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await expect(
-        cgaz
-          .connect(owner)
-          .deposit(addr1.address, ethers.constants.AddressZero, mintAmount)
-      ).to.be.revertedWith('CGAZ: deposit to the zero address')
-    })
-
-    it('should revert when depositing from the zero address', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await expect(
-        cgaz
-          .connect(owner)
-          .deposit(ethers.constants.AddressZero, addr2.address, mintAmount)
-      ).to.be.revertedWith('CGAZ: deposit from the zero address')
-    })
-
-    it('should revert when depositing to the same address', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await expect(
-        cgaz.connect(owner).deposit(addr1.address, addr1.address, mintAmount)
-      ).to.be.revertedWith('CGAZ: cannot deposit to the same address')
-    })
-
-    it('should revert when depositing more tokens than balance', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await expect(
-        cgaz
-          .connect(owner)
-          .deposit(
-            addr1.address,
-            addr2.address,
-            mintAmount.add(ethers.utils.parseEther('1'))
-          )
-      ).to.be.revertedWith('CGAZ: insufficient balance')
-    })
-
-    it('should revert when depositing zero tokens', async function () {
-      const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(addr1.address, mintAmount)
-
-      await expect(
-        cgaz.connect(owner).deposit(addr1.address, addr2.address, 0)
-      ).to.be.revertedWith('CGAZ: amount must be greater than zero')
-    })
   })
 
   describe('Transfers', function () {
-    it('should revert on any transfer attempt', async function () {
+    it('should allow the owner to transfer tokens', async function () {
       const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(owner.address, mintAmount)
+      const transferAmount = ethers.utils.parseEther('50')
 
-      await expect(
-        cgaz.connect(owner).transfer(addr1.address, mintAmount)
-      ).to.be.revertedWith('CGAZ: transfers are disabled')
+      await cgaz.connect(owner).mint(owner.address, mintAmount)
+      await cgaz.connect(owner).transfer(addr1.address, transferAmount)
+
+      const ownerBalance = await cgaz.balanceOf(owner.address)
+      const addr1Balance = await cgaz.balanceOf(addr1.address)
+
+      expect(ownerBalance).to.equal(mintAmount.sub(transferAmount))
+      expect(addr1Balance).to.equal(transferAmount)
     })
 
-    it('should revert on any transferFrom attempt', async function () {
+    it('should allow the owner to transferFrom', async function () {
       const mintAmount = ethers.utils.parseEther('100')
-      await cgaz.connect(owner).mint(owner.address, mintAmount)
+
+      await cgaz.connect(owner).mint(addr1.address, mintAmount)
+      await cgaz.connect(addr1).approve(owner.address, mintAmount)
+
+      await cgaz
+        .connect(owner)
+        .transferFrom(addr1.address, owner.address, mintAmount)
+    })
+
+    it('should revert if a non-minter tries to transfer tokens', async function () {
+      const mintAmount = ethers.utils.parseEther('100')
+
+      await cgaz.connect(owner).mint(addr1.address, mintAmount)
+
+      expect(await cgaz.hasRole(MINTER_ROLE, addr1.address)).to.equal(false)
+
+      await expect(
+        cgaz.connect(addr1).transfer(addr2.address, mintAmount)
+      ).to.be.revertedWith(
+        'CGAZ: only addresses with MINTER_ROLE can transfer tokens'
+      )
+    })
+
+    it('should revert on any transferFrom attempt by non-minter', async function () {
+      const mintAmount = ethers.utils.parseEther('100')
+      await cgaz.connect(owner).mint(addr1.address, mintAmount)
+      await cgaz.connect(addr1).approve(owner.address, mintAmount)
+
+      expect(await cgaz.hasRole(MINTER_ROLE, addr1.address)).to.equal(false)
 
       await expect(
         cgaz
           .connect(addr1)
-          .transferFrom(owner.address, addr1.address, mintAmount)
-      ).to.be.revertedWith('CGAZ: transfers are disabled')
-    })
-  })
-
-  describe('Approvals', function () {
-    it('should revert on any approval attempt', async function () {
-      await expect(
-        cgaz
-          .connect(owner)
-          .approve(addr1.address, ethers.utils.parseEther('100'))
-      ).to.be.revertedWith('CGAZ: approvals are disabled')
-    })
-
-    it('should revert on allowance checks', async function () {
-      await expect(
-        cgaz.connect(owner).allowance(owner.address, addr1.address)
-      ).to.be.revertedWith('CGAZ: approvals are disabled')
+          .transferFrom(addr1.address, owner.address, mintAmount)
+      ).to.be.revertedWith(
+        'CGAZ: only addresses with MINTER_ROLE can transfer tokens'
+      )
     })
   })
 })

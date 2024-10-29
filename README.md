@@ -1104,3 +1104,101 @@ _Constructor function._
 | recoveryAdmin\_  | address | The address of the recovery admin.         |
 | timelockPeriod\_ | uint256 | The timelock period in seconds.            |
 | lossless\_       | address | The address of the LssController contract. |
+
+## CodyfightGaz
+
+This contract allows minting and burning but disables transfers and approvals. Only addresses with the MINTER_ROLE can mint new tokens.
+
+_CGAZ is a utility token that follows the ERC20 standard from OpenZeppelin._
+
+### MINTER_ROLE
+
+```solidity
+bytes32 MINTER_ROLE
+```
+
+### constructor
+
+```solidity
+constructor(address owner) public
+```
+
+Constructor initializes the token name and symbol, and sets the owner.
+
+_Constructor function._
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| owner | address | The address to be set as the admin of the contract. |
+
+### mint
+
+```solidity
+function mint(address to, uint256 amount) public
+```
+
+This function allows an address with the MINTER_ROLE to mint tokens to a specific address.
+
+_Function to mint new tokens._
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| to | address | The address that will receive the newly minted tokens. |
+| amount | uint256 | The amount of tokens to be minted. |
+
+### batchMint
+
+```solidity
+function batchMint(address[] to, uint256[] amount) external
+```
+
+This function allows an address with the MINTER_ROLE to mint tokens to multiple addresses.
+
+_Function to batch mint new tokens._
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| to | address[] | An array of addresses that will receive the newly minted tokens. |
+| amount | uint256[] | An array of amounts of tokens to be minted. |
+
+### burn
+
+```solidity
+function burn(uint256 amount) external
+```
+
+This function allows any token holder to burn their own tokens.
+
+_Function to burn tokens._
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amount | uint256 | The amount of tokens to be burned. |
+
+### _transfer
+
+```solidity
+function _transfer(address sender, address recipient, uint256 amount) internal
+```
+
+This function only allows transfers initiated by addresses with the MINTER_ROLE. All other transfers will be reverted.
+
+_Internal function to transfer tokens._
+
+### transferFrom
+
+```solidity
+function transferFrom(address from, address to, uint256 amount) public returns (bool)
+```
+
+Only addresses with the MINTER_ROLE can call this function to transfer tokens from a given address.
+
+_Override transferFrom to disable transfers via transferFrom except for addresses with the MINTER_ROLE._
